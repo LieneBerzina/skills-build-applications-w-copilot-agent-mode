@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl, normalizeCollection } from '../api.js';
+import { normalizeCollection } from '../api.js';
+
+const teamsApiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : 'http://localhost:8000/api/teams/';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
@@ -11,7 +15,7 @@ export default function Teams() {
 
     async function fetchTeams() {
       try {
-        const response = await fetch(buildApiUrl('/api/teams/'));
+        const response = await fetch(teamsApiUrl);
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }

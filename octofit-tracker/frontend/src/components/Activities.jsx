@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl, normalizeCollection } from '../api.js';
+import { normalizeCollection } from '../api.js';
+
+const activitiesApiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/';
 
 export default function Activities() {
   const [activities, setActivities] = useState([]);
@@ -11,7 +15,7 @@ export default function Activities() {
 
     async function fetchActivities() {
       try {
-        const response = await fetch(buildApiUrl('/api/activities/'));
+        const response = await fetch(activitiesApiUrl);
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }
